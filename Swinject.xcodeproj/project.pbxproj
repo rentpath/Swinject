@@ -810,7 +810,7 @@
 					};
 					981ABE801B5FC9DF00294975 = {
 						CreatedOnToolsVersion = 7.0;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 					};
 					981ABE8A1B5FC9DF00294975 = {
 						CreatedOnToolsVersion = 7.0;
@@ -835,6 +835,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 981ABE771B5FC9DF00294975;
@@ -1274,6 +1275,7 @@
 				);
 				INFOPLIST_FILE = Sources/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.el-eleven.Swinject";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1289,6 +1291,7 @@
 				);
 				INFOPLIST_FILE = Sources/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.el-eleven.Swinject";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
