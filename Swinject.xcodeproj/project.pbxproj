@@ -822,7 +822,7 @@
 					};
 					98689C7E1BBFC7A50005C6D3 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 					};
 					98689C871BBFC7A60005C6D3 = {
 						CreatedOnToolsVersion = 7.1;
@@ -832,11 +832,11 @@
 			};
 			buildConfigurationList = 981ABE7B1B5FC9DF00294975 /* Build configuration list for PBXProject "Swinject" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = 981ABE771B5FC9DF00294975;
 			productRefGroup = 981ABE821B5FC9DF00294975 /* Products */;
@@ -1355,6 +1355,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				INFOPLIST_FILE = Sources/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.el-eleven.Swinject";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
@@ -1367,6 +1368,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				INFOPLIST_FILE = Sources/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.el-eleven.Swinject";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Release;
