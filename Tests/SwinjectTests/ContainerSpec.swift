@@ -1,15 +1,9 @@
 //
-//  ContainerSpec.swift
-//  Swinject
+//  Copyright © 2019 Swinject Contributors. All rights reserved.
 //
-//  Created by Yoichi Tagaya on 7/23/15.
-//  Copyright © 2015 Swinject Contributors. All rights reserved.
-//
-// swiftlint:disable type_body_length
-// swiftlint:disable function_body_length
 
-import Quick
 import Nimble
+import Quick
 @testable import Swinject
 
 class ContainerSpec: QuickSpec {
@@ -65,22 +59,39 @@ class ContainerSpec: QuickSpec {
             }
         }
         describe("Container hierarchy") {
+            var child: Container!
+            var parent: Container!
+            beforeEach {
+                parent = Container()
+                child = Container(parent: parent)
+            }
             it("resolves a service registered on the parent container.") {
-                let parent = Container()
                 parent.register(Animal.self) { _ in Cat() }
-                let child = Container(parent: parent)
-
                 let cat = child.resolve(Animal.self)
                 expect(cat).notTo(beNil())
             }
             it("does not resolve a service registred on the child container.") {
-                let parent = Container()
-                let child = Container(parent: parent)
                 child.register(Animal.self) { _ in Cat() }
-
                 let cat = parent.resolve(Animal.self)
                 expect(cat).to(beNil())
             }
+            it("does not create zombies") {
+                parent.register(Cat.self) { _ in Cat() }
+                weak var weakCat = child.resolve(Cat.self)
+                expect(weakCat).to(beNil())
+            }
+            #if !SWIFT_PACKAGE
+                it("does not terminate graph prematurely") {
+                    child.register(Animal.self) { _ in Cat() }
+                    parent.register(Food.self) { _ in Sushi() }
+                    parent.register(PetOwner.self) {
+                        let owner = PetOwner(pet: child.resolve(Animal.self)!)
+                        owner.favoriteFood = $0.resolve(Food.self)
+                        return owner
+                    }
+                    expect { _ = parent.resolve(PetOwner.self) }.notTo(throwAssertion())
+                }
+            #endif
         }
         describe("Scope") {
             let registerCatAndPetOwnerDependingOnFood: (Container) -> Void = {
@@ -280,7 +291,7 @@ class ContainerSpec: QuickSpec {
                     container.register(Animal.self) { _ in Turtle(name: "Ninja") }
                         .inObjectScope(scope)
                     var turtle1 = container.resolve(Animal.self)!
-                    var turtle2 = container.resolve(Animal.self)!
+                    let turtle2 = container.resolve(Animal.self)!
                     turtle1.name = "Samurai"
                     expect(turtle1.name) == "Samurai"
                     expect(turtle2.name) == "Ninja"
@@ -298,7 +309,7 @@ class ContainerSpec: QuickSpec {
                     let childContainer = Container(parent: container)
 
                     var turtle1 = childContainer.resolve(Animal.self)!
-                    var turtle2 = childContainer.resolve(Animal.self)!
+                    let turtle2 = childContainer.resolve(Animal.self)!
                     turtle1.name = "Samurai"
                     expect(turtle1.name) == "Samurai"
                     expect(turtle2.name) == "Ninja"
@@ -316,7 +327,7 @@ class ContainerSpec: QuickSpec {
                         container.register(Animal.self) { _ in
                             invokedCount += 1
                             return Turtle(name: "Ninja")
-                            }.inObjectScope(scope)
+                        }.inObjectScope(scope)
                         _ = container.resolve(Animal.self)!
                         _ = container.resolve(Animal.self)!
                         expect(invokedCount) == expectation
@@ -359,7 +370,7 @@ class ContainerSpec: QuickSpec {
 
                 let serviceEntry = container.register(Animal.self) { _ in Siamese(name: "Siam") }
                 expect(serviceEntry.objectScope) === ObjectScope.weak
+            }
         }
     }
-}
 }
